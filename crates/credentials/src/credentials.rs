@@ -301,7 +301,7 @@ impl fmt::Debug for Credentials {
         f.debug_struct("Credentials")
             .field("access_key", &self.access_key)
             .field("secret_key", &Masked(Some(&self.secret_key)))
-            .field("session_token", &self.session_token)
+            .field("session_token", &Masked(if self.session_token.is_empty() { None } else { Some(self.session_token.as_str()) }))
             .field("expiration", &self.expiration)
             .field("status", &self.status)
             .field("parent_user", &self.parent_user)
