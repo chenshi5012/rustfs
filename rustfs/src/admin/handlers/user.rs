@@ -205,11 +205,8 @@ impl Operation for AddUser {
         debug!(
             target = "rustfs::admin::handlers::user",
             operation = "AddUser",
-            query_access_key = %ak,
-            signer_access_key = %cred.access_key,
             is_temp = cred.is_temp(),
             is_service_account = cred.is_service_account(),
-            parent_user = %cred.parent_user,
             parent_identity_source = %parent_identity_source(&cred),
             jwt_parent_claim_present = cred.claims.as_ref().and_then(|c| c.get("parent")).is_some(),
             check_deny_only,
@@ -511,12 +508,9 @@ impl Operation for GetUserInfo {
 
         debug!(
             target = "rustfs::admin::handlers::user",
-            operation = "GetUserInfo",
-            query_access_key = %ak,
-            signer_access_key = %cred.access_key,
+            operation = "SetUserStatus",
             is_temp = cred.is_temp(),
             is_service_account = cred.is_service_account(),
-            parent_user = %cred.parent_user,
             parent_identity_source = %parent_identity_source(&cred),
             jwt_parent_claim_present = cred.claims.as_ref().and_then(|c| c.get("parent")).is_some(),
             check_deny_only,

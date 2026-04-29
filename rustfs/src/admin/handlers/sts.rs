@@ -218,7 +218,7 @@ async fn handle_assume_role(
 
     let exp = {
         if body.duration_seconds > 0 {
-            body.duration_seconds
+            body.duration_seconds.clamp(900, 43200)
         } else {
             3600
         }
@@ -243,14 +243,10 @@ async fn handle_assume_role(
         return Err(s3_error!(InvalidArgument, "global active sk not init"));
     };
 
-    info!("AssumeRole get claims {:?}", &claims);
-
     let mut new_cred = get_new_credentials_with_metadata(&claims, &secret)
         .map_err(|e| S3Error::with_message(S3ErrorCode::InternalError, format!("get new cred failed {e}")))?;
 
     new_cred.parent_user = cred.access_key.clone();
-
-    debug!("AssumeRole get new_cred {:?}", &new_cred);
 
     let updated_at = iam_store
         .set_temp_user(&new_cred.access_key, &new_cred, None)

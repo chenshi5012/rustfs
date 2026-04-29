@@ -144,7 +144,7 @@ pub fn create_new_credentials_with_metadata(
         }
     };
 
-    warn!("create_new_credentials_with_metadata expiration {expiration:?}, access_key: {ak}");
+    // Removed warn log to prevent access_key and expiration leakage
 
     let token = utils::generate_jwt(&claims, token_secret)?;
 
