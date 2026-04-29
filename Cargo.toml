@@ -330,3 +330,9 @@ codegen-units = 1
 [profile.profiling]
 inherits = "release"
 debug = true
+
+# Patch s3s to use a local version that redacts sensitive Body content in Debug
+# output (SecretAccessKey / SessionToken in STS XML responses).
+# See: https://github.com/rustfs/rustfs/security — Body::Once Debug leak
+[patch."https://github.com/rustfs/s3s"]
+s3s = { path = "../s3s_src/crates/s3s" }
