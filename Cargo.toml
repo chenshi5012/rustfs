@@ -331,8 +331,10 @@ codegen-units = 1
 inherits = "release"
 debug = true
 
-# Patch s3s to use a local version that redacts sensitive Body content in Debug
-# output (SecretAccessKey / SessionToken in STS XML responses).
-# See: https://github.com/rustfs/rustfs/security — Body::Once Debug leak
+# Patch s3s to redact sensitive Body content in Debug output.
+# SecretAccessKey and SessionToken in STS XML responses were previously leaked
+# in plaintext when RUST_LOG=debug. This patch replaces Body::Once raw bytes
+# with a byte-length summary in the Debug representation.
+# See: https://github.com/chenshi5012/s3s/tree/fix/redact-body-once-debug-output
 [patch."https://github.com/rustfs/s3s"]
-s3s = { path = "../s3s_src/crates/s3s" }
+s3s = { git = "https://github.com/chenshi5012/s3s", rev = "7a4ed3d1846a3cbbf1b0af364c54be44dcf35c9c" }
